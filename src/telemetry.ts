@@ -1,6 +1,12 @@
+import { mkdirSync } from 'node:fs';
 import { config as loadEnv } from 'dotenv';
 
 loadEnv({ quiet: true });
+
+// @sisques-labs/nestjs-kit instantiates DailyRotateFile at module-load time
+// (to export defaultSharedWinstonLoggerOptions) before any NestJS config runs.
+// The directory must exist or the process crashes with EACCES in containers.
+mkdirSync('logs', { recursive: true });
 
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
