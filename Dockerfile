@@ -45,10 +45,6 @@ COPY --from=builder --chown=node:node /app/dist ./dist
 # runs here); dropping it removes its bundled vulnerable `tar` dependency.
 RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
-# winston-daily-rotate-file creates logs/ relative to CWD on startup; pre-create
-# it owned by node so the unprivileged user can write to it.
-RUN mkdir -p /app/logs && chown node:node /app/logs
-
 USER node
 EXPOSE 3000
 
